@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict');
+const E=require('./beta-engine.js');
+const a=E.run(42,30),b=E.run(42,30);
+assert.deepEqual(a,b,'same seed reproduces world state and events');
+assert.equal(a.agents.length,5);
+assert.equal(a.round,30);
+assert.ok(a.battles.length>=5,'multiple battles generated');
+assert.ok(a.battles.every(x=>x.a!==x.b&&x.sourceA&&x.sourceB&&x.proposal.task&&x.proposal.method));
+assert.ok(a.battles.some(x=>x.stage==='RECORDED'&&x.record));
+assert.ok(a.battles.some(x=>x.samples.length>0));
+assert.ok(a.events.some(x=>x.type==='proposal'));
+assert.ok(a.events.some(x=>x.type==='measurement'));
+assert.ok(a.events.some(x=>x.type==='record'));
+assert.equal(E.run(42,50).round,40,'hard cap at 40 rounds');
+console.log('PASS: deterministic world, five agents, simultaneous battles, evidence and ledger stages');

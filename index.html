@@ -87,13 +87,11 @@ function save() {
 }
 
 function pos(e) {
-  const r = svg.getBoundingClientRect();
-  return {
-    x: Math.max(0, Math.min(1000, (e.clientX-r.left)/r.width*1000)),
-    y: Math.max(0, Math.min(700, (e.clientY-r.top)/r.height*700))
-  };
+  const p = svg.createSVGPoint();
+  p.x = e.clientX;
+  p.y = e.clientY;
+  return p.matrixTransform(svg.getScreenCTM().inverse());
 }
-
 function nearest(p) {
   let found = null;
   let distance = 18;

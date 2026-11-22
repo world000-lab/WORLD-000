@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WORLD 000 — The Open Source Universe</title>
+<meta name="description" content="오픈소스 프로젝트가 기술력을 증명하고 경쟁하는 공개 세계.">
+<style>
+:root{--bg:#080d18;--panel:#111c2d;--line:#2c405d;--txt:#edf4ff;--muted:#9bb0cb;--blue:#65aaff;--cyan:#63dfce;--gold:#ffd27c;--red:#ff8796}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#1b3659,#080d18 58%);color:var(--txt);font:15px/1.5 system-ui,sans-serif}
+header{padding:22px max(16px,calc((100% - 1240px)/2));border-bottom:1px solid var(--line);background:#091321e8;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+h1{margin:0;letter-spacing:.13em;font-size:27px}header p{margin:4px 0 0;color:var(--muted)}main{max-width:1240px;margin:20px auto;padding:0 15px}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}button,.btn{background:#17263b;color:var(--txt);border:1px solid var(--line);padding:9px 13px;border-radius:9px;cursor:pointer;font-weight:650;text-decoration:none;display:inline-block}button:hover,.btn:hover{border-color:var(--blue)}button.active,.primary{background:#20599b;border-color:#4d94df}
+.panel{background:linear-gradient(145deg,#121f32,#0e1828);border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:15px}
+h2{font-size:18px;margin:0 0 10px}h3{font-size:15px;margin:0 0 7px}.muted,.small{color:var(--muted)}.small{font-size:12px}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:15px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat,.item{background:#0b1625;border:1px solid var(--line);border-radius:10px;padding:11px}.stat b{display:block;font-size:21px}
+.map{height:480px;position:relative;overflow:hidden;border:1px solid #34516f;border-radius:12px;background-color:#091625;background-image:linear-gradient(#1a304733 1px,transparent 1px),linear-gradient(90deg,#1a304733 1px,transparent 1px);background-size:30px 30px}
+.map:before,.map:after{content:"";position:absolute;border:1px solid #456b8b66;border-radius:48%;width:430px;height:280px;left:7%;top:13%;transform:rotate(-18deg);pointer-events:none}.map:after{width:330px;height:220px;left:48%;top:48%;transform:rotate(22deg)}
+.bubble{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;padding:7px;border:2px solid #a7d4ff;background:#327dc255;box-shadow:0 0 25px #3b91e855;min-width:66px;min-height:66px;max-width:175px;text-decoration:none;color:white;z-index:1}
+.bubble span{font-size:11px;font-weight:750;text-shadow:0 2px 5px #000;overflow-wrap:anywhere}
+.list{display:grid;gap:8px}.item strong{display:block}.meta{font-size:12px;color:var(--muted)}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+label{display:block;font-size:13px;color:var(--muted);margin:8px 0 4px}input,select,textarea{width:100%;background:#091321;border:1px solid var(--line);border-radius:8px;padding:10px;color:var(--txt)}textarea{min-height:85px;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hidden{display:none}.badge{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:2px 7px;color:var(--cyan)}
+.metricbar{height:7px;background:#203149;border-radius:99px;overflow:hidden;margin-top:5px}.metricbar i{display:block;height:100%;background:#65aaff}
+.notice{padding:10px 12px;border-radius:9px;background:#17263b;border:1px solid #38516e;color:#c6d8ee;font-size:13px}
+footer{max-width:1240px;margin:20px auto 32px;padding:0 16px;color:var(--muted);font-size:12px}
+a{color:var(--blue)}.tagline{color:var(--gold);font-size:13px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.map{height:430px}.stats{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div><h1>WORLD 000</h1><p>THE OPEN SOURCE UNIVERSE</p></div><div class="tagline">나는 판을 깐다. 너희가 경쟁한다.</div></header>
+<main>
+<nav>
+<button class="tab active" data-tab="universe">세계지도</button>
+<button class="tab" data-tab="projects">프로젝트 탐색</button>
+<button class="tab" data-tab="arena">기술 결투</button>
+<button class="tab" data-tab="playground">점과 선 놀이터</button>
+<button class="tab" data-tab="ledger">공개 기록</button>
+</nav>
+<section id="universe">
+<div class="grid">
+<div class="panel"><h2>오픈소스 세계지도 <span class="badge">인기·영향력 맵</span></h2>
+<p class="small">원의 크기는 GitHub Star 수를 표현합니다. Star는 인기도 지표이며 기술 성능 점수나 소유권이 아닙니다.</p>
+<div id="worldMap" class="map"></div>
+<p class="small">원을 누르면 해당 프로젝트의 GitHub 저장소가 열립니다.</p></div>
+<aside>
+<div class="panel"><h2>세계 현황</h2><div class="stats"><div class="stat"><span class="small">프로젝트</span><b id="projectCount">—</b></div><div class="stat"><span class="small">공개 제안</span><b id="issueCount">—</b></div><div class="stat"><span class="small">기술 검증</span><b id="verifiedCount">0</b></div></div><div id="connection" class="notice" style="margin-top:10px">GitHub 공개 데이터 연결 준비 중</div></div>
+<div class="panel"><h2>Star 영향력 순위</h2><div id="ranking" class="list"><p class="muted">불러오는 중…</p></div></div>
+<div class="panel"><h2>공개 참여하기</h2><p class="small">프로젝트 등록과 결투 신청은 GitHub 공개 기록으로 남습니다.</p><div class="actions"><a class="btn primary" href="https://github.com/world000-lab/WORLD-000/issues/new/choose" target="_blank">참여·등록</a><a class="btn" href="https://github.com/world000-lab/WORLD-000/discussions" target="_blank">규칙 토론</a></div></div>
+</aside></div>
+<div class="panel"><h2>두 가지 경쟁 지표</h2><div class="row"><div class="item"><strong>① 영향력</strong><p class="small">GitHub Star, Fork, 활동 등 공개된 생태계 지표. 프로젝트의 관심도와 확산 정도를 보여줍니다.</p></div><div class="item"><strong>② 기술력</strong><p class="small">동일한 과제와 환경에서 측정한 속도·효율·품질·안정성. 테스트 증거가 공개되기 전에는 미검증으로 표시합니다.</p></div></div></div>
+</section>
+
+<section id="projects" class="hidden">
+<div class="panel"><h2>GitHub 오픈소스 탐색</h2><p class="muted">실제 공개 저장소를 검색하고 WORLD 000 참여 후보로 확인합니다.</p>
+<div class="row"><div><label>검색어</label><input id="query" placeholder="예: video generation, llm, game engine"></div><div><label>정렬</label><select id="sort"><option value="stars">Star 많은 순</option><option value="updated">최근 업데이트</option><option value="forks">Fork 많은 순</option></select></div></div>
+<div class="actions"><button id="search" class="primary">GitHub 검색</button></div><div id="searchStatus" class="notice" style="margin-top:10px">검색어를 입력하세요.</div><div id="results" class="list" style="margin-top:10px"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+<h3>저장소 URL로 조회</h3><div class="row"><input id="repoUrl" placeholder="https://github.com/owner/repo"><button id="lookup">조회하기</button></div><div class="small">등록 제안은 공개 Issue로 제출되며, 홈페이지의 프로젝트 목록은 GitHub 공개 검색 결과를 표시합니다.</div></div>
+</section>
+
+<section id="arena" class="hidden">
+<div class="panel"><h2>기술 결투 신청</h2>
+<div class="notice">결투는 Star 수로 승패를 정하지 않습니다. 양측이 동일한 과제·버전·환경·측정 방법에 합의하고, 결과 증거를 공개해야 합니다. 현재 이 화면은 결투 조건을 작성해 공개 신청서로 넘기는 단계입니다.</div>
+<div class="row"><div><label>도전하는 프로젝트 저장소</label><input id="challenger" placeholder="https://github.com/owner/project-a"></div><div><label>도전받는 프로젝트 저장소</label><input id="target" placeholder="https://github.com/owner/project-b"></div></div>
+<div class="row"><div><label>경쟁 분야</label><select id="field"><option>속도</option><option>효율성</option><option>결과물 품질</option><option>안정성</option><option>비용 대비 성능</option><option>종합 성능</option></select></div><div><label>테스트 과제</label><input id="task" placeholder="양측이 동일하게 수행할 작업"></div></div>
+<label>측정 방법 및 환경</label><textarea id="method" placeholder="사용 버전, 하드웨어, 데이터, 반복 횟수, 측정 단위, 승패 기준을 적어주세요."></textarea>
+<div class="actions"><button class="primary" id="submitDuel">공개 결투 제안서 만들기</button></div><p class="small">공정한 조건이 합의되기 전에는 승패·영토 이동이 발생하지 않습니다.</p></div>
+<div class="panel"><h2>기술 점수표 원칙</h2><div class="row">
+<div class="item"><strong>속도</strong><div class="small">동일 작업의 처리 시간, 반복 측정 중앙값</div></div>
+<div class="item"><strong>효율성</strong><div class="small">작업당 메모리·연산량·에너지·비용</div></div>
+<div class="item"><strong>품질</strong><div class="small">사전에 합의한 정답·평가 기준 또는 블라인드 평가</div></div>
+<div class="item"><strong>안정성</strong><div class="small">반복 성공률, 오류율, 재현성</div></div>
+</div></div>
+</section>
+
+<section id="playground" class="hidden">
+<div class="panel"><h2>점과 선 놀이터</h2><p class="small">초기 세계의 기반인 점 생성과 선 연결을 보존합니다. 여기서 만든 배치는 현재 이 브라우저에만 저장됩니다.</p>
+<div class="actions"><button data-tool="point" class="tool active">● 점 만들기</button><button data-tool="line" class="tool">╱ 선 연결</button><button data-tool="move" class="tool">✥ 이동</button><button data-tool="delete" class="tool">× 삭제</button><button id="saveWorld">저장</button><button id="clearWorld">전체 초기화</button></div>
+<svg id="dotWorld" viewBox="0 0 1000 560" style="width:100%;height:55vh;min-height:350px;background:#080b12;border:1px solid var(--line);border-radius:10px;touch-action:none"></svg><div id="dotStatus" class="small">빈 세계입니다. 점을 찍어 시작하세요.</div></div>
+</section>
+
+<section id="ledger" class="hidden">
+<div class="panel"><h2>공개 경쟁 기록</h2><p class="small">공개 Issue가 WORLD 000의 초기 공개 장부입니다. 제출 내용과 댓글, 수정 이력은 누구나 확인할 수 있습니다.</p><div id="ledgerList" class="list"><p class="muted">기록을 불러오는 중…</p></div><div class="actions"><a class="btn primary" href="https://github.com/world000-lab/WORLD-000/issues" target="_blank">전체 기록 보기</a><a class="btn" href="https://github.com/world000-lab/WORLD-000/discussions" target="_blank">규칙 토론 보기</a></div></div>
+<div class="panel"><h2>검증 상태 구분</h2><p><span class="badge">제안</span> 경쟁 조건이 공개된 상태</p><p><span class="badge">미검증</span> 결과가 제출됐지만 재현 확인 전</p><p><span class="badge">검증 완료</span> 공개된 절차로 재현 확인된 결과</p><p class="small">검증 담당자와 재현 절차가 갖춰지기 전에는 자동으로 '검증 완료' 처리하지 않습니다.</p></div>
+</section>
+</main>
+<footer>WORLD 000 · 나는 판을 깐다. 너희가 경쟁한다. · 공개 데이터 출처: GitHub API · 이 초기 버전은 성능을 직접 실행·측정하지 않습니다.</footer>
+<script>
+const API='https://api.github.com',REPO='world000-lab/WORLD-000';
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['universe','projects','arena','playground','ledger'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab))});
+function repoName(url){let m=url.trim().match(/github\.com\/([^/]+\/[^/?#]+)/i);return m?m[1].replace(/\.git$/,''):null}
+function repoCard(p){return `<div class="item"><strong>${esc(p.full_name)} · ★ ${p.stargazers_count.toLocaleString()}</strong><div class="meta">${esc(p.language||'기타')} · Fork ${p.forks_count.toLocaleString()} · ${esc(p.description||'설명 없음')}</div><div class="actions"><a href="${esc(p.html_url)}" target="_blank">GitHub 저장소</a><button data-add="${esc(p.full_name)}">참여 등록 제안</button></div></div>`}
+function registrationUrl(full){let title=encodeURIComponent('[PROJECT] '+full);let body=encodeURIComponent('## 프로젝트 저장소\nhttps://github.com/'+full+'\n\n## 프로젝트 목적 및 기술 분야\n\n## 라이선스\n\n## 등록 요청 사유\n');return `https://github.com/${REPO}/issues/new?title=${title}&body=${body}&labels=project-registration`}
+async function loadUniverse(){
+ try{let q=encodeURIComponent('(topic:open-source OR topic:artificial-intelligence OR topic:developer-tools OR topic:video) stars:>300');let r=await fetch(`${API}/search/repositories?q=${q}&sort=stars&order=desc&per_page=28`);if(!r.ok)throw Error('GitHub API '+r.status);let d=await r.json(),items=d.items||[];$('projectCount').textContent=items.length;$('connection').textContent='GitHub 공개 API 연결 완료 · 검색 결과 '+(d.total_count||items.length).toLocaleString()+'개';
+ let map=$('worldMap');map.innerHTML='';items.slice(0,22).forEach((p,i)=>{let a=document.createElement('a');a.className='bubble';a.href=p.html_url;a.target='_blank';a.rel='noopener';let s=Math.max(65,Math.min(175,62+Math.log10(p.stargazers_count+1)*18));a.style.width=s+'px';a.style.height=s+'px';a.style.left=(3+(i*23)%83)+'%';a.style.top=(3+(i*29)%78)+'%';a.innerHTML=`<span>${esc(p.name)}<br>★ ${p.stargazers_count.toLocaleString()}</span>`;a.title=p.full_name;map.append(a)});
+ $('ranking').innerHTML=items.slice(0,10).map((p,i)=>`<div class="item"><strong>${i+1}. ${esc(p.full_name)}</strong><div class="meta">★ ${p.stargazers_count.toLocaleString()} · ${esc(p.language||'기타')}</div></div>`).join('');
+ }catch(e){$('connection').textContent='GitHub 데이터 조회 실패: '+e.message;$('ranking').innerHTML='<p class="muted">잠시 후 새로고침하세요.</p>'}
+ try{let r=await fetch(`${API}/repos/${REPO}/issues?state=all&per_page=30`);if(!r.ok)throw Error();let xs=(await r.json()).filter(x=>!x.pull_request);$('issueCount').textContent=xs.length;$('ledgerList').innerHTML=xs.map(x=>`<div class="item"><strong><a href="${esc(x.html_url)}" target="_blank">${esc(x.title)}</a></strong><div class="meta">#${x.number} · ${esc(x.state)} · ${new Date(x.updated_at).toLocaleString('ko-KR')}</div></div>`).join('')||'<p class="muted">아직 공개 참여 기록이 없습니다.</p>'}catch(e){$('issueCount').textContent='—';$('ledgerList').innerHTML='<p class="muted">공개 기록을 읽을 수 없습니다.</p>'}
+}
+async function searchRepos(q,sort='stars'){if(!q)return; $('searchStatus').textContent='GitHub 검색 중…';$('results').innerHTML='';try{let r=await fetch(`${API}/search/repositories?q=${encodeURIComponent(q)}&sort=${sort}&order=desc&per_page=20`);if(!r.ok)throw Error('요청 제한 또는 오류: '+r.status);let d=await r.json();$('searchStatus').textContent=`총 ${d.total_count.toLocaleString()}개 중 최대 20개`;d.items.forEach(p=>{let el=document.createElement('div');el.innerHTML=repoCard(p);el.querySelector('button').onclick=()=>window.open(registrationUrl(p.full_name),'_blank');$('results').append(el)})}catch(e){$('searchStatus').textContent=e.message}}
+$('search').onclick=()=>searchRepos($('query').value.trim(),$('sort').value);
+$('lookup').onclick=async()=>{let full=repoName($('repoUrl').value);if(!full){$('searchStatus').textContent='GitHub 저장소 주소를 확인하세요.';return}try{let r=await fetch(`${API}/repos/${full}`);if(!r.ok)throw Error('저장소 조회 실패: '+r.status);let p=await r.json();$('results').innerHTML=repoCard(p);$('results').querySelector('button').onclick=()=>window.open(registrationUrl(p.full_name),'_blank');$('searchStatus').textContent='저장소 정보를 확인했습니다.'}catch(e){$('searchStatus').textContent=e.message}}
+$('submitDuel').onclick=()=>{let a=repoName($('challenger').value),b=repoName($('target').value),task=$('task').value.trim(),method=$('method').value.trim();if(!a||!b||a===b||!task||!method){alert('서로 다른 두 저장소, 테스트 과제, 측정 방법을 입력하세요.');return}let title=encodeURIComponent(`[DUEL] ${a} vs ${b} — ${$('field').value}`);let body=encodeURIComponent(`## 결투 대상\n- 도전자: https://github.com/${a}\n- 방어자: https://github.com/${b}\n- 분야: ${$('field').value}\n\n## 테스트 과제\n${task}\n\n## 측정 방법 및 환경\n${method}\n\n## 공정성 원칙\n양측이 동일 조건에 합의하고 결과 증거가 공개되기 전에는 승패 및 영토 이동을 확정하지 않습니다.\n\n## 상태\n제안 — 양측 조건 합의 전`);window.open(`https://github.com/${REPO}/issues/new?title=${title}&body=${body}&labels=duel-proposal,unverified`,'_blank')};
+// Local-only dot/line playground, preserved separately from public leaderboard.
+const svg=$('dotWorld'),KEY='world000-playground-v1';let world={points:[],lines:[]},tool='point',selected=null,drag=null,nextId=1;
+try{let x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.points)&&Array.isArray(x.lines)){world=x;nextId=Math.max(0,...x.points.map(p=>p.id||0))+1}}catch(e){}
+const saveDots=()=>{try{localStorage.setItem(KEY,JSON.stringify(world));return true}catch(e){return false}};
+function pos(e){let p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+function hit(p){return world.points.find(x=>Math.hypot(x.x-p.x,x.y-p.y)<19)||null}
+function el(n,a){let x=document.createElementNS('http://www.w3.org/2000/svg',n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}
+function renderDots(){svg.replaceChildren();svg.append(el('rect',{x:0,y:0,width:1000,height:560,fill:'#080b12'}));world.lines.forEach(l=>{let a=world.points.find(p=>p.id===l.a),b=world.points.find(p=>p.id===l.b);if(a&&b)svg.append(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#75a9df','stroke-width':2}))});world.points.forEach(p=>svg.append(el('circle',{cx:p.x,cy:p.y,r:8,fill:p.id===selected?'#facc15':'#e2e8f0',stroke:'#3b82f6','stroke-width':2})));$('dotStatus').textContent=`점 ${world.points.length}개 · 선 ${world.lines.length}개 · 도구 ${tool}`}
+document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;selected=null;document.querySelectorAll('[data-tool]').forEach(x=>x.classList.toggle('active',x===b));renderDots()});
+svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;let p=pos(e),h=hit(p);if(tool==='point'){world.points.push({id:nextId++,x:p.x,y:p.y});saveDots();renderDots()}else if(tool==='line'&&h){if(selected===null)selected=h.id;else if(selected!==h.id){if(!world.lines.some(l=>(l.a===selected&&l.b===h.id)||(l.a===h.id&&l.b===selected)))world.lines.push({a:selected,b:h.id});selected=null;saveDots()}else selected=null;renderDots()}else if(tool==='delete'&&h){world.points=world.points.filter(x=>x.id!==h.id);world.lines=world.lines.filter(l=>l.a!==h.id&&l.b!==h.id);saveDots();renderDots()}else if(tool==='move'&&h){drag=h.id;svg.setPointerCapture(e.pointerId)}});
+svg.addEventListener('pointermove',e=>{if(drag===null)return;let p=world.points.find(x=>x.id===drag),q=pos(e);if(p){p.x=q.x;p.y=q.y;renderDots()}});
+function stop(e){if(drag!==null){drag=null;saveDots();if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId)}}svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);
+$('saveWorld').onclick=()=>{$('dotStatus').textContent=saveDots()?'저장 완료':'저장 실패'};$('clearWorld').onclick=()=>{if(confirm('점과 선을 모두 지울까요?')){world={points:[],lines:[]};nextId=1;saveDots();renderDots()}};
+renderDots();loadUniverse();
+</script></body></html>

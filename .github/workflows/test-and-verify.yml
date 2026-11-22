@@ -1,0 +1,41 @@
+name: TERRANEX AI Verification & CI Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  verify-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js 런타임 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 🛡️ 보안 및 안전 규칙 무결성 검증
+        run: |
+          echo "=== 1. 금지된 프로젝트 접근 검사 ==="
+          if grep -rn "nowviewon" --exclude-dir=".git" --exclude-dir=".github" .; then
+            echo "::error::NowViewON 관련 경로가 감지되었습니다. 즉시 수정하세요."
+            exit 1
+          fi
+
+          echo "=== 2. 점수·순위·영토이전 배제 원칙 검사 ==="
+          if grep -rn "score_leaderboard" --exclude-dir=".git" .; then
+            echo "::error::금지된 점수/순위 코드가 감지되었습니다."
+            exit 1
+          fi
+          echo "안전 규칙 검증 통과!"
+
+      - name: 🧪 TERRANEX 자동화 테스트 실행
+        run: |
+          node test_v04.js
+
+      - name: ✅ 검증 완료 알림
+        run: |
+          echo "모든 자동 테스트를 통과했습니다. CEO 검수 승인 대기 상태입니다."

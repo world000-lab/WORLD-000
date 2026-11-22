@@ -1,68 +1,37 @@
-# WORLD 000
+# WORLD 000 — The Open Source Universe
 
-**We create the world. You create its history.**
+**나는 판을 깐다. 너희가 경쟁한다.**
 
-## A World Built by Its Participants
+WORLD 000은 오픈소스 프로젝트가 자신의 기술력을 증명하고 다른 프로젝트에 도전하는 공개 경쟁 게임입니다.
 
-WORLD 000 is an experimental, persistent digital world represented by dots and lines.
+## 두 종류의 지표를 구분합니다
+1. **영향력 지도:** GitHub Star/Fork 등 공개 지표. 인기와 생태계 확산을 보여주며 기술력 점수가 아닙니다.
+2. **기술 경쟁:** 동일 과제·버전·환경에서 속도, 효율성, 품질, 안정성을 비교합니다. 재현 가능한 증거가 확인되기 전에는 미검증입니다.
 
-We provide the playground.
+## 지금 공개된 기능
+- GitHub 공개 저장소 검색 및 영향력 지도
+- 프로젝트 등록 제안 링크
+- 동일 조건 기술 결투 제안서 생성
+- 공개 GitHub Issues 장부 표시
+- 규칙 토론 링크
+- 초기 점·선 놀이터 유지 (브라우저 로컬 저장)
 
-What happens inside it belongs to the creativity, decisions, and interactions of its participants.
+## 아직 구현되지 않은 기능
+- 서버 기반 다중 사용자 상태 공유
+- 자동 실행 벤치마크/성능 검증
+- 자동 승패 판정 및 영토 이전
+- 사용자 계정·동맹·실시간 알림
 
-There is no predefined civilization, technology tree, weapon system, storyline, or final winner.
+## 공개 참여
+- 참여/프로젝트 등록/결투: https://github.com/world000-lab/WORLD-000/issues
+- 규칙 토론: https://github.com/world000-lab/WORLD-000/discussions
+- 코드 및 변경 이력: https://github.com/world000-lab/WORLD-000
 
-Participants may invent, build, experiment, cooperate, compete, and discover possibilities that the founder never imagined.
+## 투명성 원칙
+- 제안, 미검증 결과, 검증 완료를 구분한다.
+- 동일 조건과 재현 절차가 없는 점수로 승패를 확정하지 않는다.
+- 게임상 영토는 실제 프로젝트 소유권·저작권을 바꾸지 않는다.
+- 모든 주요 규칙 변경은 공개 토론과 변경 이력으로 남긴다.
 
-**The world is not a finished game. It is a place where games, systems, and histories may emerge.**
-
-## Our Philosophy
-
-The founder does not dictate how participants should play or what they should create.
-
-The platform provides the technical foundation, shared environment, persistence, and necessary security boundaries.
-
-Participants shape the world through their actions.
-
-AI agents and human participants may both contribute, subject to the same platform safety requirements.
-
-## What We Are Building First
-
-Our first objective is a minimal working playground:
-
-- A shared digital space represented by dots and lines.
-- A way for participants to interact with that space.
-- A way to preserve changes and history.
-- A secure foundation for future experimentation.
-
-We are not designing a predetermined game.
-
-## Current Status
-
-**Early development — no public playable version yet.**
-
-The initial technical foundation will be developed with AI assistance.
-
-Human contributors are welcome, but participation is voluntary and no one is required to follow a predetermined creative direction.
-
-Licensing and contribution terms must be finalized before substantial external code contributions are accepted.
-
-## Participate
-
-[Community Discussion](https://github.com/world000-lab/WORLD-000/discussions/1)
-
-[Initial Technical Discussion](https://github.com/world000-lab/WORLD-000/issues/2)
-
-Share an idea, question an assumption, propose an experiment, or help create the foundation.
-
-## Our Boundary
-
-Freedom inside the world does not authorize attacks on real people, accounts, infrastructure, or services.
-
-Platform security, lawful conduct, and contributor rights must be respected.
-
----
-
-**We create the world. You create its history.**
-
-*Don't destroy the playground. Make history inside it.*
+## 배포
+GitHub Pages에서 `main` 브랜치의 `/ (root)`를 배포 대상으로 사용합니다.

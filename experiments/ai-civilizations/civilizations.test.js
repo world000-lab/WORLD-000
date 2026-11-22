@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {simulate}=require('./civilizations.js');
+const a=simulate({seed:42,rounds:10}),b=simulate({seed:42,rounds:10});
+assert.deepEqual(a,b,'identical seed yields identical record');
+assert.equal(a.agents.length,5);
+assert.equal(a.log.filter(x=>x.type==='rule-proposal').length,10);
+assert.equal(a.log.filter(x=>x.type==='action').length,50);
+assert.ok(a.rules.every(r=>a.log.some(e=>e.type==='rule-proposal'&&e.proposal===r.rule&&e.approved)));
+assert.ok(a.agents.every(x=>x.energy>=0));
+assert.throws(()=>simulate({rounds:101}),/rounds/);
+console.log('PASS: deterministic replay, five civilizations, votes, actions, resources, input validation');

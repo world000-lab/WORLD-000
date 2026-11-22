@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WORLD 000 — The Playground</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080b12;color:#e8edf7;font-family:Arial,sans-serif}
+header{padding:18px 22px;border-bottom:1px solid #263044;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:21px;margin:0;letter-spacing:2px}
+small{color:#94a3b8}
+.toolbar{padding:12px;display:flex;gap:8px;flex-wrap:wrap;background:#101522}
+button{background:#202b3d;color:white;border:1px solid #40516c;border-radius:7px;padding:10px 13px;cursor:pointer}
+button:hover{background:#334663}
+button.active{background:#2563eb;border-color:#60a5fa}
+#world{display:block;width:100%;height:calc(100vh - 180px);min-height:350px;touch-action:none;cursor:crosshair}
+footer{padding:10px 16px;color:#94a3b8;font-size:12px;border-top:1px solid #263044}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>WORLD 000</h1>
+    <small>I built the playground. You make the game.</small>
+  </div>
+  <small>니들끼리 싸워!</small>
+</header>
+
+<div class="toolbar">
+  <button data-tool="point" class="active">● 점 만들기</button>
+  <button data-tool="line">╱ 선 연결</button>
+  <button data-tool="move">✥ 이동</button>
+  <button data-tool="delete">× 삭제</button>
+  <button id="save">저장</button>
+  <button id="reset">전체 초기화</button>
+</div>
+
+<svg id="world" xmlns="http://www.w3.org/2000/svg"></svg>
+
+<footer>
+  <span id="status">빈 세계입니다. 점을 찍어 시작하세요.</span>
+  <span> · 현재 브라우저에 자동 저장됩니다.</span>
+</footer>
+
+<script>
+"use strict";
+
+const svg = document.getElementById("world");
+const status = document.getElementById("status");
+const KEY = "world000-playground-v1";
+
+let tool = "point";
+let selected = null;
+let dragging = null;
+let moved = false;
+let nextId = 1;
+let world = {points:[], lines:[]};
+
+try {
+  const saved = JSON.parse(localStorage.getItem(KEY));
+  if (
+    saved &&
+    Array.isArray(saved.points) &&
+    Array.isArray(saved.lines)
+  ) {
+    world = saved;
+    nextId = Math.max(
+      0,
+      ...world.points.map(p => Number(p.id) || 0)
+    ) + 1;
+  }
+} catch(e) {
+  console.warn("저장된 데이터를 불러오지 못했습니다.", e);
+}
+
+function save() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(world));
+    return true;
+  } catch(e) {
+    status.textContent = "저장 실패: 브라우저 저장 공간을 확인하세요.";
+    return false;
+  }
+}
+
+function pos(e) {
+  const r = svg.getBoundingClientRect();
+  return {
+    x: Math.max(0, Math.min(1000, (e.clientX-r.left)/r.width*1000)),
+    y: Math.max(0, Math.min(700, (e.clientY-r.top)/r.height*700))
+  };
+}
+
+function nearest(p) {
+  let found = null;
+  let distance = 18;
+  for (const point of world.points) {
+    const d = Math.hypot(point.x-p.x,point.y-p.y);
+    if (d < distance) {
+      distance = d;
+      found = point;
+    }
+  }
+  return found;
+}
+
+function nearestLine(p) {
+  let found = -1;
+  let best = 12;
+  world.lines.forEach((line,i) => {
+    const a = world.points.find(x => x.id===line.a);
+    const b = world.points.find(x => x.id===line.b);
+    if (!a || !b) return;
+    const dx=b.x-a.x,dy=b.y-a.y;
+    const length=dx*dx+dy*dy;
+    if (!length) return;
+    const t=Math.max(0,Math.min(1,
+      ((p.x-a.x)*dx+(p.y-a.y)*dy)/length));
+    const d=Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));
+    if(d<best){best=d;found=i;}
+  });
+  return found;
+}
+
+function element(name, attrs) {
+  const el=document.createElementNS(
+    "http://www.w3.org/2000/svg",name);
+  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+  return el;
+}
+
+function render() {
+  svg.setAttribute("viewBox","0 0 1000 700");
+  svg.replaceChildren();
+
+  const bg=element("rect",{
+    x:0,y:0,width:1000,height:700,fill:"#080b12"
+  });
+  svg.append(bg);
+
+  world.lines.forEach(line=>{
+    const a=world.points.find(p=>p.id===line.a);
+    const b=world.points.find(p=>p.id===line.b);
+    if(!a||!b)return;
+    svg.append(element("line",{
+      x1:a.x,y1:a.y,x2:b.x,y2:b.y,
+      stroke:"#75a9df","stroke-width":2
+    }));
+  });
+
+  world.points.forEach(p=>{
+    svg.append(element("circle",{
+      cx:p.x,cy:p.y,r:7,
+      fill:p.id===selected?"#facc15":"#e2e8f0",
+      stroke:"#3b82f6","stroke-width":2
+    }));
+  });
+
+  status.textContent =
+    `점 ${world.points.length}개 · 선 ${world.lines.length}개 · 도구: ${tool}`;
+}
+
+function changeTool(name) {
+  tool=name;
+  selected=null;
+  document.querySelectorAll("[data-tool]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.tool===name);
+  });
+  render();
+}
+
+document.querySelectorAll("[data-tool]").forEach(b=>{
+  b.addEventListener("click",()=>changeTool(b.dataset.tool));
+});
+
+svg.addEventListener("pointerdown",e=>{
+  if(e.button!==0)return;
+  const p=pos(e);
+  const hit=nearest(p);
+
+  if(tool==="point"){
+    world.points.push({id:nextId++,x:p.x,y:p.y});
+    save();
+    render();
+  }
+
+  if(tool==="line" && hit){
+    if(selected===null){
+      selected=hit.id;
+    } else if(selected!==hit.id){
+      if(!world.lines.some(l=>
+        (l.a===selected&&l.b===hit.id)||
+        (l.a===hit.id&&l.b===selected)
+      )){
+        world.lines.push({a:selected,b:hit.id});
+      }
+      selected=null;
+      save();
+    } else {
+      selected=null;
+    }
+    render();
+  }
+
+  if(tool==="delete"){
+    if(hit){
+      world.points=world.points.filter(x=>x.id!==hit.id);
+      world.lines=world.lines.filter(l=>
+        l.a!==hit.id&&l.b!==hit.id);
+    } else {
+      const i=nearestLine(p);
+      if(i>=0)world.lines.splice(i,1);
+    }
+    save();
+    render();
+  }
+
+  if(tool==="move"&&hit){
+    dragging=hit.id;
+    moved=false;
+    svg.setPointerCapture(e.pointerId);
+  }
+});
+
+svg.addEventListener("pointermove",e=>{
+  if(dragging===null)return;
+  const p=world.points.find(x=>x.id===dragging);
+  if(!p)return;
+  const xy=pos(e);
+  p.x=xy.x;
+  p.y=xy.y;
+  moved=true;
+  render();
+});
+
+function stopDrag(e){
+  if(dragging!==null){
+    dragging=null;
+    if(moved)save();
+    if(svg.hasPointerCapture(e.pointerId)){
+      svg.releasePointerCapture(e.pointerId);
+    }
+  }
+}
+
+svg.addEventListener("pointerup",stopDrag);
+svg.addEventListener("pointercancel",stopDrag);
+
+document.getElementById("save").onclick=()=>{
+  if(save())status.textContent="저장 완료!";
+};
+
+document.getElementById("reset").onclick=()=>{
+  if(!confirm("현재 세계의 점과 선을 모두 삭제할까요?"))return;
+  world={points:[],lines:[]};
+  selected=null;
+  nextId=1;
+  save();
+  render();
+};
+
+render();
+</script>
+</body>
+</html>

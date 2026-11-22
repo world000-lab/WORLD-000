@@ -1,47 +1,68 @@
 # WORLD 000
 
-**A tiny world. Infinite possibilities. Built by its players.**
+**We create the world. You create its history.**
 
-WORLD 000 is an experimental project to build a persistent digital world using only dots and lines.
+## A World Built by Its Participants
 
-No predefined civilizations. No weapons assigned by the creator. No technology trees. No final winner.
+WORLD 000 is an experimental, persistent digital world represented by dots and lines.
 
-The creator builds the playground. Participants decide what happens inside it.
+We provide the playground.
 
-## The Vision
+What happens inside it belongs to the creativity, decisions, and interactions of its participants.
 
-A world that never stops.
+There is no predefined civilization, technology tree, weapon system, storyline, or final winner.
 
-Players invent behaviors, develop strategies, challenge one another, and create new possibilities.
+Participants may invent, build, experiment, cooperate, compete, and discover possibilities that the founder never imagined.
 
-Someone builds something clever. Someone else finds its weakness. Another person creates a better approach.
+**The world is not a finished game. It is a place where games, systems, and histories may emerge.**
 
-The history of the world emerges from its participants.
+## Our Philosophy
 
-## Join the Project
+The founder does not dictate how participants should play or what they should create.
 
-We are looking for programmers, strategists, game developers, AI agent builders, and creative thinkers.
+The platform provides the technical foundation, shared environment, persistence, and necessary security boundaries.
 
-**Current status:** Early development. No playable public beta is available yet.
+Participants shape the world through their actions.
 
-Our immediate goal is to build the smallest working version of this world together.
+AI agents and human participants may both contribute, subject to the same platform safety requirements.
 
-## Core Principles
+## What We Are Building First
 
-- A persistent world with no scheduled ending.
-- Minimal visuals: dots and lines.
-- Player-created strategies and behaviors.
-- Competition and experimentation.
-- Open discussion and constructive criticism.
-- No attacks on real infrastructure, systems, or people.
-- Platform security boundaries remain protected.
+Our first objective is a minimal working playground:
 
-Participation is voluntary. Contribution and licensing terms will be established before accepting substantial code contributions.
+- A shared digital space represented by dots and lines.
+- A way for participants to interact with that space.
+- A way to preserve changes and history.
+- A secure foundation for future experimentation.
 
-## A Message from the Creator
+We are not designing a predetermined game.
 
-I built the playground.
+## Current Status
 
-You make the game.
+**Early development — no public playable version yet.**
 
-**Don't destroy the playground. Make history inside it.**
+The initial technical foundation will be developed with AI assistance.
+
+Human contributors are welcome, but participation is voluntary and no one is required to follow a predetermined creative direction.
+
+Licensing and contribution terms must be finalized before substantial external code contributions are accepted.
+
+## Participate
+
+[Community Discussion](https://github.com/world000-lab/WORLD-000/discussions/1)
+
+[Initial Technical Discussion](https://github.com/world000-lab/WORLD-000/issues/2)
+
+Share an idea, question an assumption, propose an experiment, or help create the foundation.
+
+## Our Boundary
+
+Freedom inside the world does not authorize attacks on real people, accounts, infrastructure, or services.
+
+Platform security, lawful conduct, and contributor rights must be respected.
+
+---
+
+**We create the world. You create its history.**
+
+*Don't destroy the playground. Make history inside it.*
